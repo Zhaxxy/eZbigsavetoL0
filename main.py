@@ -2,11 +2,16 @@ import argparse
 from tempfile import TemporaryDirectory
 from pathlib import Path
 import hashlib
-from typing import Any, NamedTuple
+from typing import Any, NamedTuple, Sequence
 
 from lbptoolspy import extract_far4, pack_far4, SaveKey
 from lbptoolspy import lbpfile2json, json2lbpfile
 from lbptoolspy.l0_dec_enc import decrypt_ps4_l0, encrypt_ps4_l0
+
+class LevelIdAndLevelName(NamedTuple):
+    level_id: str
+    level_name: str
+
 
 class IncorrectBigFart(Exception):
     ...
@@ -17,7 +22,11 @@ class NoLevelsInBigFart(IncorrectBigFart):
 
 
 class UnsureWhichBigFartLevelToPick(IncorrectBigFart):
-    ...
+    def __init__(self, message: str, levels_names_and_ids: Sequence[LevelIdAndLevelName]):
+        pretty_levels_list = '\n'.join(f'[{x[0]}] {x[1]}' for x in levels_names_and_ids)
+        self.levels_names_and_ids = levels_names_and_ids
+        self.message_without_level_names_and_ids = message
+        super().__init__(f'\n{pretty_levels_list}\n{message}')
 
 
 class MutipleLevelsInBigfart(UnsureWhichBigFartLevelToPick):
@@ -180,14 +189,13 @@ def bigfart_to_l0(bigfart_path: Path | str, level_id: str | None = None) -> L0By
 
         levels_list.sort(key = long_lambda)
         levels_list.sort(key = lambda x: x['name'])
-        pretty_levels_list = '\n'.join(f'[{x["id"]}] {x["name"]}' for i,x in enumerate(levels_list))
         if (len(levels_list) > 1) and (not level_id):
-            raise MutipleLevelsInBigfart(f'\n{pretty_levels_list}\nmutiple levels found, please provide a `level_id` for one of the following levels')
+            raise MutipleLevelsInBigfart('mutiple levels found, please provide a `level_id` for one of the following levels',[LevelIdAndLevelName(x['id'],x['name']) for x in levels_list])
         if level_id:
             try:
                 level = bigfart_json['resource']['myMoonSlots'][level_id]
             except KeyError:
-                raise IndexChosenInBigFartNotFound(f'\n{pretty_levels_list}\n{level_id} is not here, please give an id for one of the following levels')
+                raise IndexChosenInBigFartNotFound(f'{level_id} is not here, please give an id for one of the following levels',[LevelIdAndLevelName(x['id'],x['name']) for x in levels_list])
         else:
             level, = levels_list
         is_adventure = None
