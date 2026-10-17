@@ -5,6 +5,11 @@ Convert between bigfart files and L0 (PS4 decrypted level backups)
 This is very useful if you want to edit PS4 level backups (L0 files) in toolkit, as what you can do is convert the L0 file to a bigfart, edit it in toolkit, then convert it back to an L0 file, this also makes it easy if you have a bigfart for ps3 for example and want to get a level from that onto your PS4
 
 # Usage
+assuming you have lbptoolspy installed to your main python, you could just do
+```
+python gui.py
+```
+otherwise if you prefer the cli
 ```
 usage: main.py [-h] {to-l0,to-bigfart} ...
 
