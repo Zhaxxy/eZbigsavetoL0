@@ -1,1 +1,1 @@
-lbptoolspy>1.6.1
+lbptoolspy>=1.6.1
