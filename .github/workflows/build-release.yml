@@ -31,7 +31,7 @@ jobs:
 
       - name: Build EXE
         run: |
-          pyinstaller --clean --onefile --noconsole --name eZbigsavetoL0 gui.py
+          pyinstaller --clean --onefile --noconsole --add-data "icon.ico;." --icon="icon.ico" --name eZbigsavetoL0 gui.py
 
       - name: Create GitHub Release
         env:

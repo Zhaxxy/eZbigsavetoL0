@@ -4,6 +4,7 @@ import threading
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
+import sys
 
 from main import UnsureWhichBigFartLevelToPick, bigfart_to_l0, l0_to_bigfart
 
@@ -14,7 +15,10 @@ class ConverterApp:
         root.title("bigfart <-> L0 Converter")
         root.geometry("620x300")
         root.minsize(520, 280)
-
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+            root.iconbitmap(str(Path(sys._MEIPASS) / "icon.ico"))
+        else:
+            root.iconbitmap(str(Path(__file__).parent / "icon.ico"))
         # Bottom bar: status text on the left, indeterminate progress on the right.
         bottom = ttk.Frame(root)
         bottom.pack(side="bottom", fill="x")
@@ -207,6 +211,10 @@ class ConverterApp:
 
         win = tk.Toplevel(self.root)
         win.title("Which level?")
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+            win.iconbitmap(str(Path(sys._MEIPASS) / "icon.ico"))
+        else:
+            win.iconbitmap(str(Path(__file__).parent / "icon.ico"))
         win.geometry("520x380")
         win.minsize(420, 280)
         win.transient(self.root)
