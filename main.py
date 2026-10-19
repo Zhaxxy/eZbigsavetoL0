@@ -2,7 +2,7 @@ import argparse
 from tempfile import TemporaryDirectory
 from pathlib import Path
 import hashlib
-from typing import Any, NamedTuple, Sequence
+from typing import Any, NamedTuple, Sequence, BinaryIO
 
 from lbptoolspy import extract_far4, pack_far4, SaveKey
 from lbptoolspy import lbpfile2json, json2lbpfile
