@@ -288,6 +288,7 @@ def l0_to_bigfart(l0_bytes: bytes, bigfart_path: Path | str) -> None:
             raise AssertionError()
         l0_slot = lbpfile2json(slt_file)['resource']['slots'][0]
         new_bigfart_id = 'USER_CREATED_STORED_LOCAL:32'
+        new_bigfart_location = [-0.55164087, -0.21482195, -0.8059429, 0.0]
         try:
             l0_slot['adventure']['value']
         except Exception:
@@ -295,8 +296,10 @@ def l0_to_bigfart(l0_bytes: bytes, bigfart_path: Path | str) -> None:
         else:
             if l0_slot['adventure']['value']:
                 new_bigfart_id = 'ADVENTURE_PLANET_LOCAL:82'
+                new_bigfart_location = [0.037451014, 0.31201613, -0.9493384, 0.0]
         lbp3_ps4_128_bigfart_json_template = {'revision': 35128313, 'type': 'BIG_PROFILE', 'resource': {'inventory': [], 'vitaCrossDependencyHashes': [], 'creatorDataLabels': [], 'stringTable': {'unsorted': False, 'sortEnabled': True, 'rawIndexToSortedIndex': [1, 0], 'stringList': [{'lamsKeyID': 0, 'string': '', 'index': 1}, {'lamsKeyID': -871487226, 'string': 'My Objects', 'index': 0}]}, 'fromProductionBuild': True, 'myMoonSlots': {new_bigfart_id: 6}}}
         l0_slot['id'] = new_bigfart_id
+        l0_slot['location'] = new_bigfart_location
         lbp3_ps4_128_bigfart_json_template['resource']['myMoonSlots'][new_bigfart_id] = l0_slot
         slt_file.unlink()
         new_bpr_sha1 = hashlib.sha1(json2lbpfile(lbp3_ps4_128_bigfart_json_template,dec_l0_dump / f'{l0_save_key.root_resource_hash.hex()}.bpr')).digest()
